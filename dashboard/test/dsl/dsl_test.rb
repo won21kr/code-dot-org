@@ -180,6 +180,19 @@ level 'Level 3'
     assert_equal expected, output
   end
 
+  test 'test empty scriptlevel raises error' do
+    input_dsl = "
+stage 'Stage1'
+level 'Level 1'
+variants
+endvariants
+level 'Level 3'
+"
+    assert_raises_matching /at least one level/ do
+      ScriptDSL.parse(input_dsl, 'test.script', 'test')
+    end
+  end
+
   test 'test Script DSL with selectable level variants' do
     input_dsl = "
 stage 'Stage1'

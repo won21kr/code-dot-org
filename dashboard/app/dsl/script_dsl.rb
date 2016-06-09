@@ -127,6 +127,7 @@ class ScriptDSL < BaseDSL
 
   def endvariants
     @current_scriptlevel[:properties][:prompt] = @prompt if @prompt
+    raise "Must have at least one level per scriptlevel" if @current_scriptlevel[:levels].empty?
     @scriptlevels << @current_scriptlevel
 
     @current_scriptlevel = nil
