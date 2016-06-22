@@ -1,5 +1,4 @@
 class RegistrationsController < Devise::RegistrationsController
-
   respond_to :json
 
   def update
@@ -44,7 +43,16 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     retryable on: [Mysql2::Error, ActiveRecord::RecordNotUnique], matching: /Duplicate entry/ do
-      super
+      super do |user|
+        # If user saved successfully and we have a section_code in the params,
+        # then attempt to add the user to that section.
+        next unless user.persisted?
+        next if params[:user][:section_code].blank?
+        section = Section.find_by_code(params[:user][:section_code])
+        next unless section
+        next if current_user && current_user == section.user
+        section.add_student(user)
+      end
     end
   end
 
@@ -57,4 +65,5 @@ class RegistrationsController < Devise::RegistrationsController
     params[:user][:email].present? && user.email != params[:user][:email] ||
         params[:user][:password].present?
   end
+
 end
