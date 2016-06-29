@@ -609,14 +609,13 @@ class Script < ActiveRecord::Base
     end
   end
 
-  def summarize(user = nil)
+  def summarize
     summary = {
       id: id,
       name: name,
       plc: professional_learning_course?,
       stages: stages.map(&:summarize),
-      peerReviewsRequired: peer_reviews_to_complete || 0,
-      peerReviewsPerformed: user ? PeerReview.where(reviewer: user, script: self).map { |review| {id: review.id, submitted: !review.status.nil?}} : [],
+      peerReviewsRequired: peer_reviews_to_complete || 0
     }
 
     summary[:trophies] = Concept.summarize_all if trophies

@@ -9,6 +9,7 @@ module UsersHelper
     user_data = {}
     merge_user_summary(user_data, user)
     merge_script_progress(user_data, user, script, exclude_level_progress)
+    merge_peer_review_progress(user_data, user, script)
     user_data
   end
 
@@ -121,6 +122,21 @@ module UsersHelper
           end
         end
       end
+    end
+
+    user_data
+  end
+
+  def merge_peer_review_progress(user_data, user, script)
+    if user &&
+        script.professional_learning_course? &&
+        Plc::EnrollmentUnitAssignment.exists?(user: user, plc_course_unit: script.plc_course_unit)
+
+      user_data[:peerReviewsPerformed] = PeerReview.where(reviewer: user, script: script).map do |review|
+        {id: review.id, submitted: !review.status.nil?}
+      end
+    else
+      user_data[:peerReviewsPerformed] = []
     end
 
     user_data
