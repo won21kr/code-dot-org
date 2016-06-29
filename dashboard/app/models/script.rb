@@ -610,11 +610,35 @@ class Script < ActiveRecord::Base
   end
 
   def summarize
+    summarized_stages = stages.map(&:summarize)
+
+    if peer_reviews_to_complete
+      levels = []
+      peer_reviews_to_complete.times do |x|
+        levels << {
+            ids: [x],
+            position: 0,
+            kind: 'peer_review',
+            title: '',
+            url: '',
+            name: 'Reviews unavailable at this time'
+        }
+      end
+
+      peer_review_section = {
+          name: "You must complete #{peer_reviews_to_complete} peer reviews for this unit",
+          flex_category: 'Peer Review',
+          levels: levels
+      }
+
+      summarized_stages << peer_review_section
+    end
+
     summary = {
       id: id,
       name: name,
       plc: professional_learning_course?,
-      stages: stages.map(&:summarize),
+      stages: summarized_stages,
       peerReviewsRequired: peer_reviews_to_complete || 0
     }
 

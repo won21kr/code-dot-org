@@ -41,6 +41,18 @@ class PeerReview < ActiveRecord::Base
     escalated: 2
   }
 
+  def css_status
+    status.nil? ? 'in_progress' : 'submitted'
+  end
+
+  def result
+    status.nil? ? ActivityConstants::UNSUBMITTED_RESULT : ActivityConstants::BEST_PASS_RESULT
+  end
+
+  def get_title_string
+    status.nil? ? 'Review in progress' : 'Link to your submitted review'
+  end
+
   def self.pull_review_from_pool(script, user)
     # Find the first review such that meets these criteria
     # Review is for this script

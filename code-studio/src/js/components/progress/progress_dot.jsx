@@ -23,6 +23,28 @@ export const ProgressDot = React.createClass({
     saveAnswersBeforeNavigation: React.PropTypes.bool.isRequired
   },
 
+  iconForPeerReviewStatus: function () {
+    switch (this.props.level.status) {
+      case 'not_tried':
+        return 'fa fa-lock';
+      case 'perfect':
+        return 'fa fa-check';
+      default:
+        return '';
+    }
+  },
+
+  stringForPeerReviewStatus: function () {
+    switch (this.props.level.status) {
+      case 'not_tried':
+        return 'Reviews unavailable at this time';
+      case 'perfect':
+        return 'Link to your completed review';
+      default:
+        return 'Link to your in-progress review';
+    }
+  },
+
   render() {
     const level = this.props.level;
     const uid = level.uid || level.id.toString();
@@ -32,13 +54,15 @@ export const ProgressDot = React.createClass({
     const outlineCurrent = this.props.courseOverviewPage && uid === this.props.currentLevelId;
     const smallDot = !this.props.courseOverviewPage && uid !== this.props.currentLevelId;
     const showLevelName = level.kind === 'named_level' && this.props.courseOverviewPage;
+    const isPeerReview = level.kind === 'peer_review';
+    const isLockedPeerReview = isPeerReview && level.status === 'not_tried';
 
     return (
       <a
         key='link'
         href={level.url}
         onClick={this.props.saveAnswersBeforeNavigation && dotClicked.bind(null, level.url)}
-        style={[styles.outer, showLevelName && {display: 'table-row'}]}
+        style={[styles.outer, (showLevelName || isPeerReview) && {display: 'table-row'}]}
       >
         {level.icon ?
           <i
@@ -53,7 +77,7 @@ export const ProgressDot = React.createClass({
             ]}
           /> :
           <div
-            className={`level-${level.id}`}
+            className={`level-${level.id} ${isPeerReview && this.iconForPeerReviewStatus()}`}
             style={[
               styles.dot.puzzle,
               this.props.courseOverviewPage && styles.dot.overview,
@@ -64,11 +88,13 @@ export const ProgressDot = React.createClass({
               styles.status[level.status || 'not_tried']
             ]}
           >
-            {level.kind === 'named_level' ? '\u00a0' : level.title}
+            {(showLevelName || (isPeerReview && level.status === 'attempted')) ? '\u00a0' : level.title}
           </div>
         }
-        {showLevelName &&
-          <span key='named_level' style={styles.levelName}>{level.name}</span>
+        {(showLevelName || isPeerReview) &&
+          <span key='named_level' style={styles.levelName}>
+            {isPeerReview ? this.stringForPeerReviewStatus() : level.name}
+          </span>
         }
       </a>
     );
