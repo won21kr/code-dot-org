@@ -621,7 +621,8 @@ class Script < ActiveRecord::Base
             kind: 'peer_review',
             title: '',
             url: '',
-            name: 'Reviews unavailable at this time'
+            name: 'Reviews unavailable at this time',
+            icon: 'fa-lock'
         }
       end
 

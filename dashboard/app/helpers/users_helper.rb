@@ -124,22 +124,22 @@ module UsersHelper
       end
     end
 
-    if user &&
-        script.professional_learning_course? &&
-        Plc::EnrollmentUnitAssignment.exists?(user: user, plc_course_unit: script.plc_course_unit)
-
-      reviews = PeerReview.where(reviewer: user, script: script)
-
-      reviews.each_with_index do |review, index|
-        user_data[:levels][index] = {
-            result: review.result,
-            status: review.status,
-            url: peer_review_path(review)
-        }
-      end
-
-      puts user_data.inspect
-    end
+    # if user &&
+    #     script.professional_learning_course? &&
+    #     Plc::EnrollmentUnitAssignment.exists?(user: user, plc_course_unit: script.plc_course_unit)
+    #
+    #   reviews = PeerReview.where(reviewer: user, script: script)
+    #
+    #   reviews.each_with_index do |review, index|
+    #     user_data[:levels][index] = {
+    #         result: review.result,
+    #         status: review.status,
+    #         url: peer_review_path(review)
+    #     }
+    #   end
+    #
+    #   puts user_data.inspect
+    # end
 
     user_data
   end
@@ -150,7 +150,7 @@ module UsersHelper
         Plc::EnrollmentUnitAssignment.exists?(user: user, plc_course_unit: script.plc_course_unit)
 
       user_data[:peerReviewsPerformed] = PeerReview.where(reviewer: user, script: script).map do |review|
-        {id: review.id, submitted: !review.status.nil?}
+        {id: review.id, status: review.css_status, submitted: !review.status.nil?, url: peer_review_path(review), name: review.get_title_string, result: review.result, icon: review.get_icon}
       end
     else
       user_data[:peerReviewsPerformed] = []

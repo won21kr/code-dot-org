@@ -99,14 +99,8 @@ progress.renderCourseProgress = function (scriptData, currentLevelId) {
     if (data.levels) {
       store.dispatch({
         type: 'MERGE_PROGRESS',
-        progress: _.mapValues(data.levels, level => level.submitted ? SUBMITTED_RESULT : level.result)
-      });
-    }
-
-    if (data.peerReviewsPerformed) {
-      store.dispatch({
-        type: 'MERGE_PEER_REVIEWS',
-        peerReviewsPerformed: data.peerReviewsPerformed
+        progress: _.mapValues(data.levels, level => level.submitted ? SUBMITTED_RESULT : level.result),
+        peerReviewsPerformed: data.peerReviewsPerformed,
       });
     }
   });
@@ -166,10 +160,23 @@ function loadProgress(scriptData, currentLevelId, saveAnswersBeforeNavigation = 
         });
       })}));
 
-      return Object.assign({}, state, {
+      let returnState =  Object.assign({}, state, {
         progress: newProgress,
         stages: stages
       });
+
+      let peerReviewStage = _.findLast(returnState.stages, function (stage) {
+        return stage.flex_category === 'Peer Review';
+      });
+
+      if (action.peerReviewsPerformed) {
+        action.peerReviewsPerformed.forEach(function (peerReview, index) {
+            Object.assign(peerReviewStage.levels[index], peerReview);
+          }
+        );
+      }
+
+      return returnState;
     } else if (action.type === 'UPDATE_FOCUS_AREAS') {
       return Object.assign({}, state, {
         changeFocusAreaPath: action.changeFocusAreaPath,
@@ -178,10 +185,6 @@ function loadProgress(scriptData, currentLevelId, saveAnswersBeforeNavigation = 
     } else if (action.type === 'SHOW_LESSON_PLAN_LINKS') {
       return Object.assign({}, state, {
         showLessonPlanLinks: true
-      });
-    } else if (action.type === 'MERGE_PEER_REVIEWS') {
-      return Object.assign({}, state, {
-        peerReviewsPerformed: action.peerReviewsPerformed
       });
     }
     return state;

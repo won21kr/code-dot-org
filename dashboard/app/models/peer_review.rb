@@ -42,7 +42,7 @@ class PeerReview < ActiveRecord::Base
   }
 
   def css_status
-    status.nil? ? 'in_progress' : 'submitted'
+    status.nil? ? 'attempted' : 'perfect'
   end
 
   def result
@@ -51,6 +51,10 @@ class PeerReview < ActiveRecord::Base
 
   def get_title_string
     status.nil? ? 'Review in progress' : 'Link to your submitted review'
+  end
+
+  def get_icon
+    'fa-check' unless status.nil?
   end
 
   def self.pull_review_from_pool(script, user)
