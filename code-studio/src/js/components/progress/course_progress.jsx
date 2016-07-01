@@ -5,7 +5,6 @@ import _ from 'lodash';
 
 import { stageShape, peerReviewShape } from './types';
 import CourseProgressRow from './course_progress_row.jsx';
-import PeerReviewSection from './peer_review_section.jsx';
 import color from '../../color';
 
 const styles = {
@@ -26,23 +25,10 @@ const CourseProgress = React.createClass({
     professionalLearningCourse: React.PropTypes.bool,
     focusAreaPositions: React.PropTypes.arrayOf(React.PropTypes.number),
     stages: React.PropTypes.arrayOf(stageShape),
-    peerReviewsRequired: React.PropTypes.number,
-    peerReviewsPerformed: React.PropTypes.arrayOf(peerReviewShape)
   },
 
   render() {
     const groups = _.groupBy(this.props.stages, stage => (stage.flex_category || 'Content'));
-    const peerReviewSection = true && (
-      <div key='peer-review'>
-        <h4
-          id='peer-review'
-          style={styles.flexHeader}
-          >
-          Peer Review
-        </h4>
-        <PeerReviewSection/>
-      </div>
-    );
 
     let count = 1;
 
@@ -69,7 +55,6 @@ const CourseProgress = React.createClass({
             )}
           </div>
         )}
-        {peerReviewSection}
       </div>
     );
   }
@@ -79,6 +64,4 @@ export default connect(state => ({
   professionalLearningCourse: state.professionalLearningCourse,
   focusAreaPositions: state.focusAreaPositions,
   stages: state.stages,
-  peerReviewsRequired: state.peerReviewsRequired,
-  peerReviewsPerformed: state.peerReviewsPerformed
 }))(Radium(CourseProgress));
