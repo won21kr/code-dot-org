@@ -41,22 +41,6 @@ class PeerReview < ActiveRecord::Base
     escalated: 2
   }
 
-  def css_status
-    status.nil? ? 'attempted' : 'perfect'
-  end
-
-  def result
-    status.nil? ? ActivityConstants::UNSUBMITTED_RESULT : ActivityConstants::BEST_PASS_RESULT
-  end
-
-  def get_title_string
-    status.nil? ? 'Review in progress' : 'Link to your submitted review'
-  end
-
-  def get_icon
-    'fa-check' unless status.nil?
-  end
-
   def self.pull_review_from_pool(script, user)
     # Find the first review such that meets these criteria
     # Review is for this script
@@ -153,6 +137,16 @@ class PeerReview < ActiveRecord::Base
           level_source_id: level_source_id
         )
       end
+    end
+  end
+
+  def summarize
+    return Hash.new.tap do |summary_hash|
+      summary_hash[:id] = id
+      summary_hash[:status] = status.nil? ? 'attempted' : 'perfect'
+      summary_hash[:name] = status.nil? ? 'Review in progress' : 'Link to your submitted review'
+      summary_hash[:result] = status.nil? ? ActivityConstants::UNSUBMITTED_RESULT : ActivityConstants::BEST_PASS_RESULT
+      summary_hash[:icon] = 'fa-check' unless status.nil?
     end
   end
 end

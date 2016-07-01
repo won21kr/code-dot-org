@@ -383,13 +383,7 @@ class Script < ActiveRecord::Base
           hidden: script_data[:hidden].nil? ? true : script_data[:hidden], # default true
           login_required: script_data[:login_required].nil? ? false : script_data[:login_required], # default false
           wrapup_video: script_data[:wrapup_video],
-          properties: Hash.new.tap do |property_hash|
-            property_hash[:pd] = script_data[:pd] || false # default false
-            property_hash[:admin_required] = script_data[:admin_required] || false # default false
-            property_hash[:professional_learning_course] = script_data[:professional_learning_course] || false # default false
-            property_hash[:student_of_admin_required] = script_data[:student_of_admin_required] || false # default false
-            property_hash[:peer_reviews_to_complete] = script_data[:peer_reviews_to_complete] if script_data[:peer_reviews_to_complete]
-          end
+          properties: build_property_hash(script_data)
         }, stages.map{|stage| stage[:scriptlevels]}.flatten]
       end
 
@@ -552,13 +546,7 @@ class Script < ActiveRecord::Base
           hidden: script_data[:hidden].nil? ? true : script_data[:hidden], # default true
           login_required: script_data[:login_required].nil? ? false : script_data[:login_required], # default false
           wrapup_video: script_data[:wrapup_video],
-          properties: {
-                       pd: script_data[:pd].nil? ? false : script_data[:pd], # default false
-                       admin_required: script_data[:admin_required].nil? ? false : script_data[:admin_required], # default false
-                       professional_learning_course: script_data[:professional_learning_course].nil? ? false : script_data[:professional_learning_course], # default false
-                       student_of_admin_required: script_data[:student_of_admin_required].nil? ? false : script_data[:student_of_admin_required], # default false
-                       peer_reviews_to_complete: script_data[:peer_reviews_to_complete].nil? ? 0 : script_data[:peer_reviews_to_complete], # default 0
-          }
+          properties: build_property_hash(script_data)
         }, script_data[:stages].map { |stage| stage[:scriptlevels] }.flatten)
         Script.update_i18n(i18n)
       end
@@ -655,5 +643,15 @@ class Script < ActiveRecord::Base
 
   def localized_title
     I18n.t "data.script.name.#{name}.title"
+  end
+
+  def self.build_property_hash(script_data)
+    Hash.new.tap do |property_hash|
+      property_hash[:pd] = script_data[:pd] || false # default false
+      property_hash[:admin_required] = script_data[:admin_required] || false # default false
+      property_hash[:professional_learning_course] = script_data[:professional_learning_course] || false # default false
+      property_hash[:student_of_admin_required] = script_data[:student_of_admin_required] || false # default false
+      property_hash[:peer_reviews_to_complete] = script_data[:peer_reviews_to_complete] if script_data[:peer_reviews_to_complete]
+    end
   end
 end
