@@ -74,6 +74,10 @@ class Ability
         can :view_level_solutions, Script do |script|
           !script.professional_learning_course?
         end
+
+        can :show, PeerReview do |review|
+          [review.reviewer_id, review.submitter_id].include?(user.id)
+        end
       end
 
       if user.facilitator?

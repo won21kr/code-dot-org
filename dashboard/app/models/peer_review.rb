@@ -146,7 +146,7 @@ class PeerReview < ActiveRecord::Base
       summary_hash[:status] = status.nil? ? 'attempted' : 'perfect'
       summary_hash[:name] = status.nil? ? 'Review in progress' : 'Link to your submitted review'
       summary_hash[:result] = status.nil? ? ActivityConstants::UNSUBMITTED_RESULT : ActivityConstants::BEST_PASS_RESULT
-      summary_hash[:icon] = 'fa-check' unless status.nil?
+      summary_hash[:icon] = status.nil? ? '' : 'fa-check'
     end
   end
 end
