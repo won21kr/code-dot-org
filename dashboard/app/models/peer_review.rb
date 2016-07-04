@@ -149,4 +149,14 @@ class PeerReview < ActiveRecord::Base
       summary_hash[:icon] = status.nil? ? '' : 'fa-check'
     end
   end
+
+  def self.new_review_summary
+    return Hash.new.tap do |summary_hash|
+      summary_hash[:icon] = ''
+      summary_hash[:name] = 'Review a new submission'
+      summary_hash[:status] = ''
+      summary_hash[:result] = ActivityConstants::UNSUBMITTED_RESULT
+      summary_hash[:icon] = ''
+    end
+  end
 end

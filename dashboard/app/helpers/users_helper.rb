@@ -130,10 +130,15 @@ module UsersHelper
   def merge_peer_review_progress(user_data, user, script)
     if user &&
         script.professional_learning_course? &&
+        script.peer_reviews_to_complete? &&
         Plc::EnrollmentUnitAssignment.exists?(user: user, plc_course_unit: script.plc_course_unit)
 
       user_data[:peerReviewsPerformed] = PeerReview.where(reviewer: user, script: script).map do |review|
         review.summarize.merge!(url: peer_review_path(review))
+      end
+
+      if user_data[:peerReviewsPerformed].size < script.peer_reviews_to_complete && PeerReview.get_review_for_user(script, user)
+        user_data[:peerReviewsPerformed] << PeerReview.new_review_summary.merge!(url: script_pull_review_path(script))
       end
     end
 

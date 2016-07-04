@@ -191,7 +191,7 @@ export const ProgressDot = React.createClass({
               styles.status[level.status || 'not_tried'],
             ]}
         >
-        {(showLevelName || (isPeerReview && level.status === 'attempted')) ? '\u00a0' : level.title}
+        {(showLevelName || (isPeerReview && level.icon === '')) ? '\u00a0' : level.title}
       </div>;
 
     const rowText = (showLevelName || isPeerReview) &&
