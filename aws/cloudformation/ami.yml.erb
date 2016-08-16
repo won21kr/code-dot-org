@@ -37,7 +37,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: 64
+            VolumeSize: 16
             VolumeType: gp2
       UserData:
         Fn::Base64: <%=file.call('ami_bootstrap.sh.erb',
