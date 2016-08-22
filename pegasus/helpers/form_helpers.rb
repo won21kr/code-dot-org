@@ -119,6 +119,16 @@ def delete_form(kind, secret)
   true
 end
 
+def insert_form_geos(form_id, ip_address, timestamp)
+  row = {
+    form_id: form_id,
+    created_at: timestamp,
+    updated_at: timestamp,
+    ip_address: ip_address
+  }
+  DB[:form_geos].insert(row)
+end
+
 def insert_form(kind, data, options={})
   if dashboard_user
     data[:email_s] ||= dashboard_user[:email]
@@ -155,6 +165,8 @@ def insert_form(kind, data, options={})
   else
     row[:id] = DB[:forms].insert(row)
   end
+
+  insert_form_geos(row[:id], ip_address, timestamp)
 
   row
 end
