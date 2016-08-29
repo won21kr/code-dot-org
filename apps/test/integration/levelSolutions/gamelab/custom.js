@@ -15,7 +15,7 @@ module.exports = {
         // room to add tests here
 
         // add a completion on timeout since this is a freeplay level
-        var gameLab = window.__mostRecentGameLabInstance;
+        var gameLab = window.__TestInterface.mostRecentGameLabInstance;
 
         setTimeout(function () {
           gameLab.onPuzzleComplete();

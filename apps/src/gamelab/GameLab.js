@@ -89,7 +89,10 @@ var GameLab = function () {
   errorHandler.setLogMethod(this.log.bind(this));
 
   /** Expose for testing **/
-  window.__mostRecentGameLabInstance = this;
+  window.__TestInterface = {
+    ...window.__TestInterface,
+    mostRecentGameLabInstance: this
+  };
 };
 
 module.exports = GameLab;
