@@ -165,7 +165,7 @@ exports.install = function (blockly, blockInstallOptions) {
   function getSpriteIndex(block) {
     var index = Blockly.JavaScript.valueToCode(block, 'SPRITE',
         Blockly.JavaScript.ORDER_NONE) || '1';
-    return index + '-1';
+    return index;
   }
 
   // started separating block generation for each block into it's own function
@@ -1842,9 +1842,7 @@ exports.install = function (blockly, blockInstallOptions) {
   generator.studio_whenSpriteAndGroupCollide = function () {
     var varName = Blockly.JavaScript.valueToCode(this, 'GROUPMEMBER',
         Blockly.JavaScript.ORDER_NONE);
-    // Sprite index vars need to be 1-indexed, but the callback arg will be
-    // 0-indexed, so add 1.
-    return `${varName} = touchedSpriteIndex + 1;\n`;
+    return `${varName} = touchedSpriteIndex;\n`;
   };
 
 

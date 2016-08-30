@@ -24,7 +24,7 @@ exports.setMap = function (id, value) {
 
 exports.setSprite = function (id, spriteIndex, value) {
   Studio.queueCmd(id, 'setSprite', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'value': value
   });
 };
@@ -34,7 +34,7 @@ exports.saySprite = function (id, spriteIndex, text, seconds) {
     seconds = SPEECH_BUBBLE_TIME;
   }
   Studio.queueCmd(id, 'saySprite', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'text': text,
     'seconds': seconds
   });
@@ -49,14 +49,14 @@ exports.showTitleScreen = function (id, title, text) {
 
 exports.setSpriteEmotion = function (id, spriteIndex, value) {
   Studio.queueCmd(id, 'setSpriteEmotion', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'value': value
   });
 };
 
 exports.setSpriteSpeed = function (id, spriteIndex, value) {
   Studio.queueCmd(id, 'setSpriteSpeed', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'value': value
   });
 };
@@ -79,21 +79,21 @@ exports.setDroidSpeed = function (id, value) {
 
 exports.setSpriteSize = function (id, spriteIndex, value) {
   Studio.queueCmd(id, 'setSpriteSize', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'value': value
   });
 };
 
 exports.setSpritePosition = function (id, spriteIndex, value) {
   Studio.queueCmd(id, 'setSpritePosition', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'value': Number(value)
   });
 };
 
 exports.setSpriteXY = function (id, spriteIndex, xpos, ypos) {
   Studio.queueCmd(id, 'setSpriteXY', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'x': Number(xpos),
     'y': Number(ypos)
   });
@@ -114,14 +114,14 @@ exports.setSpritesStop = function (id, spriteName) {
 exports.setSpritesChase = function (id, targetSpriteIndex, spriteName) {
   Studio.queueCmd(id, 'setSpritesChase', {
     'spriteName': spriteName,
-    'targetSpriteIndex': targetSpriteIndex,
+    'targetSpriteIndex': targetSpriteIndex - 1,
   });
 };
 
 exports.setSpritesFlee = function (id, targetSpriteIndex, spriteName) {
   Studio.queueCmd(id, 'setSpritesFlee', {
     'spriteName': spriteName,
-    'targetSpriteIndex': targetSpriteIndex,
+    'targetSpriteIndex': targetSpriteIndex - 1,
   });
 };
 
@@ -150,12 +150,12 @@ exports.playSound = function (id, soundName) {
 };
 
 exports.stop = function (id, spriteIndex) {
-  Studio.queueCmd(id, 'stop', {'spriteIndex': spriteIndex});
+  Studio.queueCmd(id, 'stop', {'spriteIndex': spriteIndex - 1});
 };
 
 exports.throwProjectile = function (id, spriteIndex, dir, className) {
   Studio.queueCmd(id, 'throwProjectile', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'dir': Number(dir),
     'className': String(className)
   });
@@ -170,14 +170,14 @@ exports.makeProjectile = function (id, className, action) {
 
 exports.move = function (id, spriteIndex, dir) {
   Studio.queueCmd(id, 'move', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'dir': Number(dir)
   });
 };
 
 exports.moveDistance = function (id, spriteIndex, dir, distance) {
   Studio.queueCmd(id, 'moveDistance', {
-    'spriteIndex': spriteIndex,
+    'spriteIndex': spriteIndex - 1,
     'dir': dir,
     'distance': distance
   });
@@ -267,7 +267,7 @@ exports.wait = function (id, value) {
 };
 
 exports.vanish = function (id, spriteIndex) {
-  Studio.queueCmd(id, 'vanish', {spriteIndex: spriteIndex});
+  Studio.queueCmd(id, 'vanish', {spriteIndex: spriteIndex - 1});
 };
 
 exports.onEvent = function (id, eventName, func) {

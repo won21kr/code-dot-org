@@ -5094,11 +5094,12 @@ function handleCollision(src, target, allowQueueExtension) {
 
   callHandler(prefix + target, allowQueueExtension);
   callHandler(prefix + 'anything', allowQueueExtension);
-  // If dest is just a number, we're colliding with another actor
+  // If target is just a number, we're colliding with another actor
   if (isActorClass(target)) {
     callHandler(prefix + 'any_actor', allowQueueExtension);
+    // Add 1 to the target to convert to 1-indexed sprite indices
     callHandler(prefix + Studio.sprite[target].imageName, false,
-        [target]);
+        [target + 1]);
   } else if (isEdgeClass(target)) {
     callHandler(prefix + 'any_edge', allowQueueExtension);
   } else if (isProjectileClass(target)) {
