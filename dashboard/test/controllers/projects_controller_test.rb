@@ -186,12 +186,6 @@ class ProjectsControllerTest < ActionController::TestCase
     assert @response.headers['Location'].ends_with? '/edit'
   end
 
-  test 'applab project level goes to edit if student of admin teacher' do
-    sign_in create(:student_of_admin)
-    get :load, key: :applab
-    assert @response.headers['Location'].ends_with? '/edit'
-  end
-
   test 'applab project level goes to edit if student without admin teacher' do
     sign_in create(:student)
     get :load, key: :applab
